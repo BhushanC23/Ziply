@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ziply | Secure Share</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- QR Code Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <link rel="stylesheet" href="assets/css/custom.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            dark: '#050812',
+                            primary: '#FF7B54',
+                            secondary: '#2EC4F3',
+                            muted: '#94969C'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="antialiased selection:bg-orange-500 selection:text-white min-h-screen flex flex-col relative overflow-x-hidden">
+    <!-- Background -->
+    <div class="hero-bg fixed inset-0 pointer-events-none">
+        <i class="fa-solid fa-bolt floating-icon icon-1" style="--r: -15deg;"></i>
+        <i class="fa-solid fa-shield-halved floating-icon icon-2" style="--r: 10deg;"></i>
+        <i class="fa-solid fa-paper-plane floating-icon icon-3" style="--r: -5deg;"></i>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 top-0 border-b border-white/5 bg-[#050812]/80 backdrop-blur-md">
+        <div class="max-w-6xl mx-auto px-6 h-16 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="index.html" class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                <div class="w-6 h-6 rounded bg-gradient-brand flex items-center justify-center text-white text-[10px]">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+                Ziply
+            </a>
+
+            <!-- Right Action -->
+            <div class="flex items-center gap-4">
+                <button id="nav-search-btn" class="w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition-all" title="Search Code">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+                <a href="history.html" class="w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition-all" title="Your Sharings">
+                    <i class="fa-solid fa-bookmark"></i>
+                </a>
+                <div class="relative">
+                    <button id="theme-toggle-btn" class="w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition-all" title="Toggle Theme">
+                        <i class="fa-regular fa-moon"></i>
+                    </button>
+                    <!-- Theme Tray -->
+                    <div id="theme-tray" class="hidden absolute right-0 mt-2 w-32 glass-panel rounded-xl p-2 flex flex-col gap-1 z-50 shadow-xl">
+                        <button class="theme-opt w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-brand-muted hover:text-white hover:bg-white/10 transition-all flex items-center gap-2" data-value="light">
+                            <i class="fa-regular fa-sun w-4"></i> Light
+                        </button>
+                        <button class="theme-opt w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-brand-muted hover:text-white hover:bg-white/10 transition-all flex items-center gap-2" data-value="dark">
+                            <i class="fa-regular fa-moon w-4"></i> Dark
+                        </button>
+                        <button class="theme-opt w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-brand-muted hover:text-white hover:bg-white/10 transition-all flex items-center gap-2" data-value="system">
+                            <i class="fa-solid fa-desktop w-4"></i> System
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex items-center justify-center pt-24 pb-12 px-4">
+        <div class="w-full max-w-2xl animate-fade-in-up">
+            
+            <!-- Secure Header -->
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-500/10 text-green-400 mb-4 border border-green-500/20">
+                    <i class="fa-solid fa-shield-halved text-xl"></i>
+                </div>
+                <h1 class="text-2xl font-bold text-white mb-2">Secure Share</h1>
+                <div class="flex items-center justify-center gap-2">
+                    <p class="text-brand-muted text-sm flex items-center gap-2">
+                        <i class="fa-regular fa-clock"></i> Expires in 23 hours
+                    </p>
+                    <span id="burn-status-badge" class="hidden text-[10px] bg-red-500/20 text-red-400 border border-red-500/30 px-2 py-0.5 rounded-full uppercase tracking-wide font-bold">
+                        <i class="fa-solid fa-fire mr-1"></i> One-time view
+                    </span>
+                </div>
+            </div>
+
+            <!-- Burn Warning Alert -->
+            <div id="burn-warning" class="hidden mb-6 bg-red-500/10 border border-red-500/20 rounded-xl p-4 flex items-start gap-3 animate-fade-in-up">
+                <i class="fa-solid fa-triangle-exclamation text-red-400 mt-0.5"></i>
+                <div>
+                    <h4 class="text-red-400 font-medium text-sm">Self-destruct enabled</h4>
+                    <p class="text-red-400/80 text-xs mt-1">This message will be deleted forever once you close this page. Make sure to save it now.</p>
+                </div>
+            </div>
+
+            <!-- Content Card -->
+            <div class="glass-panel rounded-2xl border border-white/10 shadow-2xl shadow-black/50 overflow-hidden relative">
+                
+                <!-- Burn Interstitial (Hidden by default) -->
+                <div id="burn-interstitial" class="hidden absolute inset-0 z-20 bg-[#050812]/95 backdrop-blur-md flex flex-col items-center justify-center p-8 text-center transition-opacity duration-500">
+                    <div class="w-16 h-16 rounded-full bg-red-500/10 flex items-center justify-center mb-4 border border-red-500/20 animate-pulse">
+                        <i class="fa-solid fa-fire text-2xl text-red-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Self-Destructing Message</h3>
+                    <p class="text-brand-muted text-sm mb-8 max-w-xs">
+                        This content will be permanently deleted immediately after you view it.
+                    </p>
+                    <button id="reveal-btn" class="btn-primary px-8 py-3 rounded-full font-semibold shadow-lg shadow-red-500/20 hover:shadow-red-500/40 transition-all transform hover:scale-105">
+                        Reveal Content
+                    </button>
+                </div>
+
+                <!-- Content Body -->
+                <div class="p-6 md:p-8">
+                    
+                    <!-- Text View (Default) -->
+                    <div id="view-text" class="view-content">
+                        <label class="text-xs font-medium text-brand-muted uppercase tracking-wider mb-3 block">Decrypted Message</label>
+                        <div class="bg-[#0A0F1E]/50 border border-white/10 rounded-xl p-6 relative group">
+                            <p class="text-white font-mono text-sm leading-relaxed whitespace-pre-wrap">Here are the API keys for the staging environment:
+
+AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
+AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+
+Please delete this after saving it to your local env.</p>
+                            
+                            <button class="copy-btn absolute top-4 right-4 p-2 rounded-lg bg-white/5 hover:bg-white/10 text-brand-muted hover:text-white transition-all opacity-0 group-hover:opacity-100" title="Copy Text">
+                                <i class="fa-regular fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- File View (Hidden) -->
+                    <div id="view-file" class="view-content hidden">
+                        <label class="text-xs font-medium text-brand-muted uppercase tracking-wider mb-3 block">Shared File</label>
+                        <div class="bg-[#0A0F1E]/50 border border-white/10 rounded-xl p-6 flex items-center gap-4">
+                            <div class="w-16 h-16 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-400 flex-shrink-0">
+                                <i class="fa-solid fa-file-zipper text-2xl"></i>
+                            </div>
+                            <div class="flex-grow min-w-0">
+                                <h3 class="text-white font-medium truncate">design-assets-v2.zip</h3>
+                                <p class="text-sm text-brand-muted">24.5 MB • Uploaded 1 hour ago</p>
+                            </div>
+                            <button class="bg-brand-secondary/10 hover:bg-brand-secondary/20 text-brand-secondary border border-brand-secondary/50 px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap">
+                                <i class="fa-solid fa-download mr-2"></i> Download
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Link View (Hidden) -->
+                    <div id="view-link" class="view-content hidden">
+                        <label class="text-xs font-medium text-brand-muted uppercase tracking-wider mb-3 block">Shared Link</label>
+                        <div class="bg-[#0A0F1E]/50 border border-white/10 rounded-xl p-6">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center text-brand-primary">
+                                    <i class="fa-solid fa-link"></i>
+                                </div>
+                                <div class="min-w-0">
+                                    <h3 class="text-white font-medium truncate">Figma - Project Ziply UI Kit</h3>
+                                    <p class="text-xs text-brand-muted truncate">https://www.figma.com/file/...</p>
+                                </div>
+                            </div>
+                            <a href="#" target="_blank" class="block w-full bg-white/5 hover:bg-white/10 border border-white/10 text-center text-white py-3 rounded-lg font-medium transition-all">
+                                Open Link <i class="fa-solid fa-external-link-alt ml-2 text-xs"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Footer Actions -->
+                <div class="bg-[#020305]/50 border-t border-white/5 p-4 flex justify-between items-center">
+                    <div class="text-xs text-brand-muted">
+                        <i class="fa-solid fa-eye text-brand-muted/50 mr-1"></i> One-time view
+                    </div>
+                    <button class="text-xs text-red-400 hover:text-red-300 transition-colors flex items-center gap-1">
+                        <i class="fa-solid fa-flag"></i> Report
+                    </button>
+                </div>
+            </div>
+
+            <!-- Trust Footer -->
+            <div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4 text-center opacity-80">
+                <div class="p-4 rounded-xl bg-white/5 border border-white/5 backdrop-blur-sm">
+                    <i class="fa-solid fa-shield-halved text-brand-primary mb-2 text-xl"></i>
+                    <p class="text-[10px] text-brand-muted uppercase tracking-wider font-bold">Client-Side Encryption</p>
+                </div>
+                <div class="p-4 rounded-xl bg-white/5 border border-white/5 backdrop-blur-sm">
+                    <i class="fa-solid fa-user-secret text-brand-secondary mb-2 text-xl"></i>
+                    <p class="text-[10px] text-brand-muted uppercase tracking-wider font-bold">No Activity Logs</p>
+                </div>
+                <div class="p-4 rounded-xl bg-white/5 border border-white/5 backdrop-blur-sm">
+                    <i class="fa-solid fa-fire text-red-400 mb-2 text-xl"></i>
+                    <p class="text-[10px] text-brand-muted uppercase tracking-wider font-bold">Burn On Read</p>
+                </div>
+                <div class="p-4 rounded-xl bg-white/5 border border-white/5 backdrop-blur-sm">
+                    <i class="fa-solid fa-trash-can text-white mb-2 text-xl"></i>
+                    <p class="text-[10px] text-brand-muted uppercase tracking-wider font-bold">Auto-Delete</p>
+                </div>
+            </div>
+
+            <div class="text-center mt-8">
+                <a href="share.html" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white text-sm font-medium transition-all">
+                    <i class="fa-solid fa-bolt text-brand-primary"></i> Send your own Ziply
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Search Modal (Hidden) -->
+    <div id="search-modal" class="fixed inset-0 z-[100] hidden">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" id="search-backdrop"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md p-4">
+            <div class="glass-panel rounded-2xl p-6 border border-white/10 shadow-2xl transform transition-all scale-100">
+                <h3 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-magnifying-glass text-brand-primary"></i> Retrieve Ziply
+                </h3>
+                <div class="relative">
+                    <input type="text" id="search-input" class="w-full bg-[#0A0F1E]/50 border border-white/10 rounded-xl py-3 pl-4 pr-12 text-white placeholder-gray-600 focus:outline-none focus:border-brand-primary/50 focus:ring-1 focus:ring-brand-primary/50 transition-all font-mono uppercase tracking-widest" placeholder="ENTER CODE" maxlength="6">
+                    <button id="search-submit" class="absolute right-2 top-2 bottom-2 px-4 bg-white/10 hover:bg-white/20 text-white rounded-lg text-sm font-medium transition-colors" title="Search">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+                <p id="search-error" class="text-red-400 text-xs mt-2 hidden"><i class="fa-solid fa-circle-exclamation mr-1"></i> Invalid code</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/view.js"></script>
+</body>
+</html>

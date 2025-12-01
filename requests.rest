@@ -1,0 +1,54 @@
+### 1. Health Check
+GET http://localhost:3000/api
+
+### 2. Share Text (1 Hour Expiry)
+POST http://localhost:3000/api/share
+Content-Type: application/json
+
+{
+  "type": "text",
+  "content": "This is a secret message.",
+  "duration": "1h",
+  "burnOnRead": false
+}
+
+### 3. Share Link (Burn on Read)
+POST http://localhost:3000/api/share
+Content-Type: application/json
+
+{
+  "type": "link",
+  "content": "https://github.com",
+  "duration": "1d",
+  "burnOnRead": true
+}
+
+### 4. Share File (Requires VS Code REST Client to select file)
+# Note: You must change the path below to a real file on your system
+POST http://localhost:3000/api/share
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="type"
+
+file
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="duration"
+
+10m
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="burnOnRead"
+
+false
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="test.txt"
+Content-Type: text/plain
+
+< ./package.json
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+### 5. Get Share Details (Replace :id with actual ID from response)
+GET http://localhost:3000/api/share/INSERT_ID_HERE
+
+### 6. Download File (Replace :id with actual ID)
+GET http://localhost:3000/api/share/download/INSERT_ID_HERE

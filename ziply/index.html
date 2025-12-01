@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ziply | Zip. Share. Done.</title>
+    <meta name="description" content="The fastest way to share text, files, and links — no logins, no friction.">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="assets/css/custom.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#050812',
+                            primary: '#FF7B54',
+                            secondary: '#2EC4F3',
+                            muted: '#94969C'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="antialiased selection:bg-orange-500 selection:text-white">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 top-0 transition-all duration-300 bg-transparent py-4">
+        <div class="max-w-6xl mx-auto px-6 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="#" class="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+                <div class="w-8 h-8 rounded-lg bg-gradient-brand flex items-center justify-center text-white text-sm">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+                Ziply
+            </a>
+
+            <!-- Center Navigation -->
+            <div class="hidden md:flex items-center gap-1 bg-white/5 p-1 rounded-full border border-white/5 backdrop-blur-sm">
+                <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;" class="px-5 py-1.5 rounded-full text-sm font-medium text-white bg-white/10 transition-all hover:bg-white/20" aria-label="Scroll to top">Home</a>
+                <a href="share.html" class="px-5 py-1.5 rounded-full text-sm font-medium text-brand-muted hover:text-white hover:bg-white/5 transition-all" aria-label="Go to Share Workspace">Share</a>
+            </div>
+
+            <!-- Right Icons & Trust -->
+            <div class="flex items-center gap-4">
+                <div class="hidden md:flex items-center gap-2 text-xs font-medium text-brand-muted bg-white/5 px-3 py-1.5 rounded-full border border-white/5 cursor-help" title="No account required. Just share.">
+                    <i class="fa-solid fa-lock text-brand-primary"></i>
+                    <span>No signup needed</span>
+                </div>
+                <button id="nav-search-btn" class="w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition-all" title="Search Code">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+                <a href="history.html" class="w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition-all" title="Your Sharings">
+                    <i class="fa-solid fa-bookmark"></i>
+                </a>
+                <div class="relative">
+                    <button id="theme-toggle-btn" class="w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition-all" title="Toggle Theme" aria-label="Toggle Dark Mode">
+                        <i class="fa-regular fa-moon"></i>
+                    </button>
+                    <!-- Theme Tray -->
+                    <div id="theme-tray" class="hidden absolute right-0 mt-2 w-32 glass-panel rounded-xl p-2 flex flex-col gap-1 z-50 shadow-xl">
+                        <button class="theme-opt w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-brand-muted hover:text-white hover:bg-white/10 transition-all flex items-center gap-2" data-value="light">
+                            <i class="fa-regular fa-sun w-4"></i> Light
+                        </button>
+                        <button class="theme-opt w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-brand-muted hover:text-white hover:bg-white/10 transition-all flex items-center gap-2" data-value="dark">
+                            <i class="fa-regular fa-moon w-4"></i> Dark
+                        </button>
+                        <button class="theme-opt w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-brand-muted hover:text-white hover:bg-white/10 transition-all flex items-center gap-2" data-value="system">
+                            <i class="fa-solid fa-desktop w-4"></i> System
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden">
+        <!-- Background Glow Effects -->
+        <div class="hero-bg">
+            <i class="fa-solid fa-bolt floating-icon icon-1" style="--r: -15deg;"></i>
+            <i class="fa-solid fa-shield-halved floating-icon icon-2" style="--r: 10deg;"></i>
+            <i class="fa-solid fa-paper-plane floating-icon icon-3" style="--r: -5deg;"></i>
+        </div>
+
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <div class="inline-block mb-8 px-4 py-1.5 rounded-full glass-panel text-xs font-medium text-brand-secondary tracking-wide uppercase animate-pulse">
+                <span class="w-2 h-2 rounded-full bg-brand-secondary inline-block mr-2"></span> v1.0 Public Beta is Live
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl font-bold text-white tracking-tight mb-6 leading-tight">
+                Zip. Share. <span class="text-gradient">Done.</span>
+            </h1>
+            
+            <p class="text-lg md:text-xl text-brand-muted max-w-2xl mx-auto mb-10 leading-relaxed">
+                The fastest way to share text, files, and links — no logins, no friction. 
+                Secure, ephemeral, and built for speed.
+            </p>
+            
+            <!-- Dual Action Hero -->
+            <div class="flex flex-col md:flex-row items-center justify-center gap-4 max-w-xl mx-auto">
+                <a href="share.html?mode=text" class="btn-primary w-full md:w-1/2 py-4 rounded-xl font-semibold text-lg shadow-lg shadow-orange-500/20 flex items-center justify-center gap-2 transition-transform hover:scale-105 group" aria-label="Start sharing now">
+                    <i class="fa-solid fa-plus"></i> Create New
+                </a>
+                
+                <div class="relative w-full md:w-1/2">
+                    <input type="text" id="hero-code-input" class="w-full bg-white/5 border border-white/10 rounded-xl py-4 pl-4 pr-12 text-white placeholder-gray-500 focus:outline-none focus:border-brand-primary/50 focus:ring-1 focus:ring-brand-primary/50 transition-all font-mono uppercase tracking-widest text-center" placeholder="ENTER CODE" maxlength="6" aria-label="Enter 6-digit code">
+                    <button id="hero-code-submit" class="absolute right-2 top-2 bottom-2 px-3 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors" title="Go">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <p class="text-xs text-brand-muted mt-6 opacity-60">
+                <i class="fa-solid fa-shield-halved mr-1"></i> End-to-end encrypted & ephemeral
+            </p>
+        </div>
+    </section>
+
+    <script>
+        // Hero Input Logic
+        const heroInput = document.getElementById('hero-code-input');
+        const heroSubmit = document.getElementById('hero-code-submit');
+        
+        function handleHeroSearch() {
+            const code = heroInput.value.trim().toUpperCase();
+            if (code.length === 6) {
+                window.location.href = `view.html?id=${code}`;
+            } else {
+                heroInput.classList.add('border-red-500', 'animate-pulse');
+                setTimeout(() => heroInput.classList.remove('border-red-500', 'animate-pulse'), 1000);
+            }
+        }
+
+        if(heroSubmit) heroSubmit.addEventListener('click', handleHeroSearch);
+        if(heroInput) {
+            heroInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') handleHeroSearch();
+            });
+        }
+    </script>
+
+    <!-- Feature Highlights -->
+    <section id="features" class="py-20 relative">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card 1: Text -->
+                <a href="share.html?mode=text" class="glass-panel p-8 rounded-2xl group cursor-pointer block" aria-label="Share Text">
+                    <div class="w-12 h-12 rounded-lg bg-white/5 flex items-center justify-center text-brand-primary mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fa-solid fa-align-left text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-3">Text Sharing</h3>
+                    <p class="text-brand-muted text-sm leading-relaxed mb-6">
+                        Send passwords, code snippets, or secret notes securely. Self-destructs automatically after viewing.
+                    </p>
+                    <span class="text-brand-primary text-sm font-medium group-hover:translate-x-1 transition-transform inline-block">
+                        Get Started <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </span>
+                </a>
+
+                <!-- Card 2: Files -->
+                <a href="share.html?mode=file" class="glass-panel p-8 rounded-2xl group cursor-pointer block" aria-label="Share Files">
+                    <div class="w-12 h-12 rounded-lg bg-white/5 flex items-center justify-center text-blue-400 mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fa-solid fa-file-arrow-up text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-3">File Transfer</h3>
+                    <p class="text-brand-muted text-sm leading-relaxed mb-6">
+                        Send large videos, documents, or archives instantly without email limits. No account needed.
+                    </p>
+                    <span class="text-blue-400 text-sm font-medium group-hover:translate-x-1 transition-transform inline-block">
+                        Get Started <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </span>
+                </a>
+
+                <!-- Card 3: Links -->
+                <a href="share.html?mode=link" class="glass-panel p-8 rounded-2xl group cursor-pointer block" aria-label="Share Links">
+                    <div class="w-12 h-12 rounded-lg bg-white/5 flex items-center justify-center text-orange-400 mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fa-solid fa-link text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-3">Smart Links</h3>
+                    <p class="text-brand-muted text-sm leading-relaxed mb-6">
+                        Shorten long URLs and bundle multiple links into one neat package for cleaner sharing.
+                    </p>
+                    <span class="text-orange-400 text-sm font-medium group-hover:translate-x-1 transition-transform inline-block">
+                        Get Started <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="py-24 border-t border-white/5">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-white mb-4">How Ziply Works</h2>
+                <p class="text-brand-muted">Three simple steps to share anything, anywhere.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center relative">
+                <!-- Connecting Line (Desktop) -->
+                <div class="hidden md:block absolute top-12 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-white/10 to-transparent -z-10"></div>
+
+                <!-- Step 1 -->
+                <div class="relative group">
+                    <div class="step-icon w-24 h-24 mx-auto bg-[#0A0F1E] border border-white/10 rounded-full flex items-center justify-center mb-6 z-10 relative group-hover:border-brand-primary/50 transition-colors duration-300">
+                        <i class="fa-solid fa-cloud-arrow-up text-3xl text-brand-primary"></i>
+                    </div>
+                    <h4 class="text-lg font-semibold text-white mb-2">Paste or Upload</h4>
+                    <p class="text-sm text-brand-muted">Drop your content into the secure zone.</p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative group">
+                    <div class="step-icon w-24 h-24 mx-auto bg-[#0A0F1E] border border-white/10 rounded-full flex items-center justify-center mb-6 z-10 relative group-hover:border-orange-300/50 transition-colors duration-300">
+                        <i class="fa-solid fa-link text-3xl text-orange-300"></i>
+                    </div>
+                    <h4 class="text-lg font-semibold text-white mb-2">Get a Link</h4>
+                    <p class="text-sm text-brand-muted">Instantly generate a unique, short URL.</p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative group">
+                    <div class="step-icon w-24 h-24 mx-auto bg-[#0A0F1E] border border-white/10 rounded-full flex items-center justify-center mb-6 z-10 relative group-hover:border-brand-secondary/50 transition-colors duration-300">
+                        <i class="fa-solid fa-paper-plane text-3xl text-brand-secondary"></i>
+                    </div>
+                    <h4 class="text-lg font-semibold text-white mb-2">Share & Done</h4>
+                    <p class="text-sm text-brand-muted">Send it to anyone. It vanishes when you say so.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Emotional / Value Section -->
+    <section class="py-20 bg-gradient-to-b from-transparent to-white/5">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h2 class="text-2xl md:text-3xl font-medium text-white leading-relaxed mb-2">
+                “Built for students, freelancers, creators, and real people who share every day.”
+            </h2>
+        </div>
+    </section>
+
+    <!-- Trust / Security Line -->
+    <div class="py-6 border-t border-white/5 bg-[#020305]">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <p class="text-sm text-brand-muted flex items-center justify-center gap-2">
+                <i class="fa-solid fa-shield-halved text-brand-primary"></i> No login. No tracking. No data stored after expiry.
+            </p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-white/5 bg-[#020305]">
+        <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12">
+            <!-- Brand Column -->
+            <div class="flex flex-col gap-4">
+                <div class="flex items-center gap-2">
+                    <div class="w-6 h-6 rounded bg-gradient-brand flex items-center justify-center text-white text-xs">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <span class="text-white font-bold tracking-tight">Ziply</span>
+                </div>
+                <p class="text-brand-muted text-sm">
+                    Zip. Share. Done. <br>
+                    The fastest way to share anything.
+                </p>
+                <p class="text-brand-muted text-xs mt-4">
+                    &copy; 2025 Ziply. All rights reserved.
+                </p>
+            </div>
+
+            <!-- Product Column -->
+            <div class="flex flex-col gap-4">
+                <h4 class="text-white font-semibold text-sm uppercase tracking-wider">Product</h4>
+                <a href="#" class="text-brand-muted text-sm hover:text-white transition-colors">Text Sharing</a>
+                <a href="#" class="text-brand-muted text-sm hover:text-white transition-colors">File Transfer</a>
+                <a href="#" class="text-brand-muted text-sm hover:text-white transition-colors">Smart Links</a>
+            </div>
+
+            <!-- Support & Social Column -->
+            <div class="flex flex-col gap-4">
+                <h4 class="text-white font-semibold text-sm uppercase tracking-wider">Support & Social</h4>
+                <a href="#" class="text-brand-muted text-sm hover:text-white transition-colors">Contact Us</a>
+                <a href="#" class="text-brand-muted text-sm hover:text-white transition-colors">Report Abuse</a>
+                <div class="flex gap-4 mt-2">
+                    <a href="#" class="text-brand-muted hover:text-white transition-colors" aria-label="Twitter"><i class="fa-brands fa-twitter text-lg"></i></a>
+                    <a href="#" class="text-brand-muted hover:text-white transition-colors" aria-label="GitHub"><i class="fa-brands fa-github text-lg"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Search Modal (Hidden) -->
+    <div id="search-modal" class="fixed inset-0 z-[100] hidden">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" id="search-backdrop"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md p-4">
+            <div class="glass-panel rounded-2xl p-6 border border-white/10 shadow-2xl transform transition-all scale-100">
+                <h3 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-magnifying-glass text-brand-primary"></i> Retrieve Ziply
+                </h3>
+                <div class="relative">
+                    <input type="text" id="search-input" class="w-full bg-[#0A0F1E]/50 border border-white/10 rounded-xl py-3 pl-4 pr-12 text-white placeholder-gray-600 focus:outline-none focus:border-brand-primary/50 focus:ring-1 focus:ring-brand-primary/50 transition-all font-mono uppercase tracking-widest" placeholder="ENTER CODE" maxlength="6">
+                    <button id="search-submit" class="absolute right-2 top-2 bottom-2 px-4 bg-white/10 hover:bg-white/20 text-white rounded-lg text-sm font-medium transition-colors">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+                <p id="search-error" class="text-red-400 text-xs mt-2 hidden"><i class="fa-solid fa-circle-exclamation mr-1"></i> Invalid code</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/js/nav.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
