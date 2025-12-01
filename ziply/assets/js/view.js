@@ -166,7 +166,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                 
                 if (linkInput) linkInput.value = share.content;
                 if (openBtn) {
-                    openBtn.href = share.content;
+                    let url = share.content;
+                    // Safety check: Ensure protocol exists
+                    if (!/^https?:\/\//i.test(url)) {
+                        url = 'https://' + url;
+                    }
+                    openBtn.href = url;
                     openBtn.target = '_blank';
                 }
             }

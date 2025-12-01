@@ -19,9 +19,9 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (currentMode === 'file') {
             isValid = fileInput && fileInput.files.length > 0;
         } else if (currentMode === 'link') {
-            // Simple URL regex requiring http:// or https://
-            const urlPattern = /^https?:\/\/.+/i;
-            isValid = linkInput && urlPattern.test(linkInput.value.trim());
+            // Allow simple domain format (e.g., google.com) or full URL
+            const urlPattern = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/i;
+            isValid = linkInput && linkInput.value.trim().length > 0; // Basic check, let backend/browser handle strict validation
         }
 
         if (generateBtn) {
@@ -223,7 +223,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     } else if (currentMode === 'file') {
                         content = fileInput.files[0];
                     } else if (currentMode === 'link') {
-                        content = linkInput.value;
+                        content = linkInput.value.trim();
+                        // Auto-prepend https:// if missing
+                        if (!/^https?:\/\//i.test(content)) {
+                            content = 'https://' + content;
+                        }
                     }
 
                     const newShare = await ZiplyAPI.createShare({
