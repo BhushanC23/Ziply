@@ -142,7 +142,9 @@ export const downloadFile = async (req, res) => {
 
     const { data, error } = await supabase.storage
       .from('ziply-files')
-      .createSignedUrl(share.file.storageKey, 60); // 60 seconds validity
+      .createSignedUrl(share.file.storageKey, 60, {
+        download: share.file.originalName,
+      });
 
     if (error) throw error;
 
