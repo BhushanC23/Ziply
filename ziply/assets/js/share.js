@@ -349,12 +349,41 @@ document.addEventListener('DOMContentLoaded', () => {
     // Copy Buttons
     const copyBtns = document.querySelectorAll('.copy-btn');
     copyBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const originalIcon = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-check text-green-400"></i>';
-            setTimeout(() => {
-                btn.innerHTML = originalIcon;
-            }, 2000);
+        btn.addEventListener('click', async () => {
+            let textToCopy = '';
+            
+            // Determine what to copy based on sibling element
+            const siblingInput = btn.previousElementSibling;
+            const siblingSpan = btn.previousElementSibling; // For code copy, it might be a span inside a div
+            
+            if (siblingInput && siblingInput.tagName === 'INPUT') {
+                textToCopy = siblingInput.value;
+            } else if (siblingSpan && siblingSpan.tagName === 'SPAN') {
+                 textToCopy = siblingSpan.textContent;
+            } else {
+                // Fallback for Code Copy structure: div > span + button
+                const parentDiv = btn.parentElement;
+                const codeSpan = parentDiv.querySelector('span');
+                if (codeSpan) {
+                    textToCopy = codeSpan.textContent;
+                }
+            }
+
+            if (textToCopy) {
+                try {
+                    await navigator.clipboard.writeText(textToCopy);
+                    
+                    // Visual Feedback
+                    const originalIcon = btn.innerHTML;
+                    btn.innerHTML = '<i class="fa-solid fa-check text-green-400"></i>';
+                    setTimeout(() => {
+                        btn.innerHTML = originalIcon;
+                    }, 2000);
+                } catch (err) {
+                    console.error('Failed to copy:', err);
+                    alert('Failed to copy to clipboard');
+                }
+            }
         });
     });
 });
