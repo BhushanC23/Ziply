@@ -144,7 +144,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                             const data = await ZiplyAPI.getDownloadUrl(shareId);
                             
                             if (data.downloadUrl) {
-                                window.location.href = data.downloadUrl;
+                                // Create temporary link to force download
+                                const link = document.createElement('a');
+                                link.href = data.downloadUrl;
+                                link.setAttribute('download', share.file.name);
+                                link.target = '_blank'; // Force new tab to ensure download triggers
+                                document.body.appendChild(link);
+                                link.click();
+                                document.body.removeChild(link);
+
                                 downloadBtn.innerHTML = '<i class="fa-solid fa-check mr-2"></i> Download Started';
                             } else {
                                 alert('Download failed');
