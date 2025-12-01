@@ -112,8 +112,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (share.type === 'text') {
             if (viewText) {
                 viewText.classList.remove('hidden');
-                const textArea = viewText.querySelector('textarea');
-                if (textArea) textArea.value = share.content;
+                const textP = viewText.querySelector('p');
+                if (textP) textP.textContent = share.content;
+                
+                // Setup Copy Button
+                const copyBtn = viewText.querySelector('.copy-btn');
+                if (copyBtn) {
+                    copyBtn.addEventListener('click', () => {
+                        navigator.clipboard.writeText(share.content);
+                        const originalIcon = copyBtn.innerHTML;
+                        copyBtn.innerHTML = '<i class="fa-solid fa-check text-green-400"></i>';
+                        setTimeout(() => copyBtn.innerHTML = originalIcon, 2000);
+                    });
+                }
             }
         } else if (share.type === 'file') {
             if (viewFile) {

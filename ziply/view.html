@@ -126,15 +126,10 @@
                 <div class="p-6 md:p-8">
                     
                     <!-- Text View (Default) -->
-                    <div id="view-text" class="view-content">
+                    <div id="view-text" class="view-content hidden">
                         <label class="text-xs font-medium text-brand-muted uppercase tracking-wider mb-3 block">Decrypted Message</label>
                         <div class="bg-[#0A0F1E]/50 border border-white/10 rounded-xl p-6 relative group">
-                            <p class="text-white font-mono text-sm leading-relaxed whitespace-pre-wrap">Here are the API keys for the staging environment:
-
-AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
-AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
-
-Please delete this after saving it to your local env.</p>
+                            <p id="text-content" class="text-white font-mono text-sm leading-relaxed whitespace-pre-wrap">Loading content...</p>
                             
                             <button class="copy-btn absolute top-4 right-4 p-2 rounded-lg bg-white/5 hover:bg-white/10 text-brand-muted hover:text-white transition-all opacity-0 group-hover:opacity-100" title="Copy Text">
                                 <i class="fa-regular fa-copy"></i>
