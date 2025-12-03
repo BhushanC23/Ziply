@@ -299,7 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 } catch (error) {
                     console.error('Error:', error);
-                    alert('Failed to create share: ' + error.message);
+                    showNotification(error.message || 'Failed to create share', 'error');
                     // Reset UI
                     loadingSection.classList.add('hidden');
                     inputSection.classList.remove('hidden');
@@ -385,7 +385,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }, 2000);
                 } catch (err) {
                     console.error('Failed to copy:', err);
-                    alert('Failed to copy to clipboard');
+                    showNotification('Failed to copy to clipboard', 'error');
                 }
             }
         });

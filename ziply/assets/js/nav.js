@@ -137,3 +137,40 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+// Global Notification System
+window.showNotification = function(message, type = 'info') {
+    // Remove existing toast if any
+    const existingToast = document.getElementById('global-toast');
+    if (existingToast) existingToast.remove();
+
+    // Create Toast Element
+    const toast = document.createElement('div');
+    toast.id = 'global-toast';
+    toast.className = `fixed bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3 px-6 py-3 rounded-full glass-panel border shadow-2xl transform transition-all duration-500 translate-y-24 opacity-0 z-[200]`;
+    
+    // Style based on type
+    if (type === 'error') {
+        toast.classList.add('border-red-500/20', 'bg-red-500/10');
+        toast.innerHTML = `<i class="fa-solid fa-circle-exclamation text-red-400"></i> <span class="text-sm text-white font-medium">${message}</span>`;
+    } else if (type === 'success') {
+        toast.classList.add('border-green-500/20', 'bg-green-500/10');
+        toast.innerHTML = `<i class="fa-solid fa-circle-check text-green-400"></i> <span class="text-sm text-white font-medium">${message}</span>`;
+    } else {
+        toast.classList.add('border-white/10');
+        toast.innerHTML = `<i class="fa-solid fa-circle-info text-brand-primary"></i> <span class="text-sm text-white font-medium">${message}</span>`;
+    }
+
+    document.body.appendChild(toast);
+
+    // Animate In
+    requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-24', 'opacity-0');
+    });
+
+    // Auto Hide
+    setTimeout(() => {
+        toast.classList.add('translate-y-24', 'opacity-0');
+        setTimeout(() => toast.remove(), 500);
+    }, 4000);
+};

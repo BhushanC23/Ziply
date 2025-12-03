@@ -155,12 +155,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                                 downloadBtn.innerHTML = '<i class="fa-solid fa-check mr-2"></i> Download Started';
                             } else {
-                                alert('Download failed');
+                                showNotification('Download failed', 'error');
                                 downloadBtn.innerHTML = '<i class="fa-solid fa-download mr-2"></i> Download File';
                             }
                         } catch (e) {
                             console.error(e);
-                            alert('Download error');
+                            showNotification('Download error', 'error');
                             downloadBtn.innerHTML = '<i class="fa-solid fa-download mr-2"></i> Download File';
                         }
                     });
