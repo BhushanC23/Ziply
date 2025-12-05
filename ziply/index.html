@@ -42,7 +42,7 @@
 
     <!-- Navbar -->
     <nav class="fixed w-full z-50 top-0 transition-all duration-300 bg-transparent py-4">
-        <div class="max-w-6xl mx-auto px-6 flex justify-between items-center">
+        <div class="max-w-6xl mx-auto px-6 flex justify-between items-center relative">
             <!-- Logo -->
             <a href="#" class="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
                 <div class="w-8 h-8 rounded-lg bg-gradient-brand flex items-center justify-center text-white text-sm">
@@ -52,7 +52,7 @@
             </a>
 
             <!-- Center Navigation -->
-            <div class="hidden md:flex items-center gap-1 bg-white/5 p-1 rounded-full border border-white/5 backdrop-blur-sm">
+            <div class="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-1 bg-white/5 p-1 rounded-full border border-white/5 backdrop-blur-sm">
                 <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;" class="px-5 py-1.5 rounded-full text-sm font-medium text-white bg-white/10 transition-all hover:bg-white/20" aria-label="Scroll to top">Home</a>
                 <a href="share.html" class="px-5 py-1.5 rounded-full text-sm font-medium text-brand-muted hover:text-white hover:bg-white/5 transition-all" aria-label="Go to Share Workspace">Share</a>
             </div>
