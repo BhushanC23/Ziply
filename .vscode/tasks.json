@@ -1,0 +1,14 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "append_css",
+			"type": "shell",
+			"command": "echo \"/* Glass Logo Style */\n.logo-glass {\n    font-size: 2rem;\n    background: linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0.1) 100%);\n    -webkit-background-clip: text;\n    -webkit-text-fill-color: transparent;\n    filter: drop-shadow(0 0 10px rgba(255, 123, 84, 0.5)) drop-shadow(0 0 20px rgba(46, 196, 243, 0.3));\n    transition: all 0.5s ease;\n}\n\n.logo-glass:hover {\n    filter: drop-shadow(0 0 20px rgba(255, 123, 84, 0.8)) drop-shadow(0 0 30px rgba(46, 196, 243, 0.6));\n    transform: scale(1.05);\n}\n\n.text-glow {\n    text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);\n}\n\" >> \"ziply/assets/css/custom.css\"",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build"
+		}
+	]
+}

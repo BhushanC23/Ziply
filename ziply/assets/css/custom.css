@@ -272,3 +272,35 @@ html {
     background: rgba(255, 123, 84, 0.3);
     color: white;
 }
+
+/* Glass Logo Style */
+.logo-glass {
+    font-size: 2rem;
+    background: linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0.2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 15px rgba(255, 123, 84, 0.6)) drop-shadow(0 0 25px rgba(46, 196, 243, 0.4));
+    transition: all 0.5s ease;
+}
+
+.logo-glass i {
+    background: linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0.2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.logo-glass:hover {
+    filter: drop-shadow(0 0 25px rgba(255, 123, 84, 0.9)) drop-shadow(0 0 35px rgba(46, 196, 243, 0.7));
+    transform: scale(1.05);
+}
+
+.text-glow {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.hero-slogan {
+    background: linear-gradient(to right, #fff, #94969C);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+}
