@@ -187,16 +187,26 @@ document.addEventListener('DOMContentLoaded', async () => {
         } else if (share.type === 'link') {
             if (viewLink) {
                 viewLink.classList.remove('hidden');
-                const linkInput = viewLink.querySelector('input');
+                const linkTitle = document.getElementById('link-title');
+                const linkUrl = document.getElementById('link-url');
                 const openBtn = document.getElementById('open-link-btn');
                 
-                if (linkInput) linkInput.value = share.content;
+                let url = share.content;
+                // Safety check: Ensure protocol exists
+                if (!/^https?:\/\//i.test(url)) {
+                    url = 'https://' + url;
+                }
+
+                // Try to parse hostname for title
+                try {
+                    if (linkTitle) linkTitle.textContent = new URL(url).hostname;
+                } catch (e) {
+                    if (linkTitle) linkTitle.textContent = 'Shared Link';
+                }
+                
+                if (linkUrl) linkUrl.textContent = url;
+
                 if (openBtn) {
-                    let url = share.content;
-                    // Safety check: Ensure protocol exists
-                    if (!/^https?:\/\//i.test(url)) {
-                        url = 'https://' + url;
-                    }
                     openBtn.href = url;
                     openBtn.target = '_blank';
                 }
