@@ -320,3 +320,12 @@ html {
  } 
   
  
+ . a n i m a t e - f l o a t   { 
+         a n i m a t i o n :   f l o a t   6 s   e a s e - i n - o u t   i n f i n i t e ; 
+ } 
+ . a n i m a t e - f l o a t - d e l a y e d   { 
+         a n i m a t i o n :   f l o a t   7 s   e a s e - i n - o u t   i n f i n i t e ; 
+         a n i m a t i o n - d e l a y :   2 s ; 
+ } 
+  
+ 

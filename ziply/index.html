@@ -89,45 +89,60 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden">
+    <section class="relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden">
         <!-- Background Glow Effects -->
-        <div class="hero-bg">
-            <i class="fa-solid fa-bolt floating-icon icon-1" style="--r: -15deg;"></i>
-            <i class="fa-solid fa-shield-halved floating-icon icon-2" style="--r: 10deg;"></i>
-            <i class="fa-solid fa-paper-plane floating-icon icon-3" style="--r: -5deg;"></i>
+        <div class="hero-bg absolute inset-0 pointer-events-none overflow-hidden">
+             <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-brand-primary/10 rounded-full blur-[100px] -z-10"></div>
+             <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-brand-secondary/10 rounded-full blur-[100px] -z-10"></div>
         </div>
 
-        <div class="max-w-6xl mx-auto px-6 text-center">
-            <div class="inline-block mb-8 px-4 py-1.5 rounded-full glass-panel text-xs font-medium text-brand-secondary tracking-wide uppercase animate-pulse">
-                <span class="w-2 h-2 rounded-full bg-brand-secondary inline-block mr-2"></span> v1.0 Public Beta is Live
-            </div>
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             
-            <h1 class="text-5xl md:text-7xl font-bold text-white tracking-tight mb-6 leading-tight uppercase">
-                Share Instantly. <br><span class="text-gradient">Leave No Trace.</span>
-            </h1>
-            
-            <p class="text-lg md:text-xl text-brand-muted max-w-2xl mx-auto mb-10 leading-relaxed">
-                Share sensitive data securely in seconds. No accounts. No tracking. <br class="hidden md:block">
-                Just a secure link that vanishes when you say so.
-            </p>
-            
-            <!-- Dual Action Hero -->
-            <div class="flex flex-col md:flex-row items-center justify-center gap-4 max-w-xl mx-auto">
-                <a href="share.html?mode=text" class="btn-primary w-full md:w-1/2 py-4 rounded-xl font-semibold text-lg shadow-lg shadow-orange-500/20 flex items-center justify-center gap-2 transition-transform hover:scale-105 group" aria-label="Start sharing now">
-                    <i class="fa-solid fa-bolt"></i> Start Sharing
-                </a>
-                
-                <div class="relative w-full md:w-1/2">
-                    <input type="text" id="hero-code-input" class="w-full bg-white/5 border border-white/10 rounded-xl py-4 pl-4 pr-12 text-white placeholder-gray-500 focus:outline-none focus:border-brand-primary/50 focus:ring-1 focus:ring-brand-primary/50 transition-all font-mono uppercase tracking-widest text-center" placeholder="ENTER CODE" maxlength="6" aria-label="Enter 6-digit code">
-                    <button id="hero-code-submit" class="absolute right-2 top-2 bottom-2 px-3 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors" title="Go">
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </button>
+            <!-- Left Column: 3D Image -->
+            <div class="relative flex justify-center md:justify-end order-2 md:order-1">
+                <div class="relative w-64 h-64 md:w-[500px] md:h-[500px]">
+                    <!-- Main 3D Bolt -->
+                    <img src="assets/img/logo.png" alt="Ziply 3D Logo" class="w-full h-full object-contain drop-shadow-[0_0_50px_rgba(46,196,243,0.3)] animate-float">
+                    
+                    <!-- Floating Elements behind/around -->
+                    <i class="fa-solid fa-shield-halved text-brand-primary/30 text-4xl absolute top-0 right-10 animate-float-delayed"></i>
+                    <i class="fa-solid fa-paper-plane text-brand-secondary/30 text-4xl absolute bottom-10 left-10 animate-float"></i>
                 </div>
             </div>
-            
-            <div class="flex items-center justify-center gap-6 mt-8 text-xs text-brand-muted opacity-60 uppercase tracking-widest font-medium">
-                <span><i class="fa-solid fa-shield-halved mr-2 text-brand-primary"></i>AES-256 Encrypted</span>
-                <span><i class="fa-solid fa-ghost mr-2 text-brand-secondary"></i>100% Anonymous</span>
+
+            <!-- Right Column: Content -->
+            <div class="text-center md:text-left order-1 md:order-2 z-10">
+                <div class="inline-block mb-6 px-4 py-1.5 rounded-full glass-panel text-xs font-medium text-brand-secondary tracking-wide uppercase animate-pulse">
+                    <span class="w-2 h-2 rounded-full bg-brand-secondary inline-block mr-2"></span> v1.0 Public Beta is Live
+                </div>
+                
+                <h1 class="text-5xl md:text-7xl font-bold text-white tracking-tight mb-6 leading-tight uppercase">
+                    Share Instantly. <br><span class="text-gradient">Leave No Trace.</span>
+                </h1>
+                
+                <p class="text-lg text-brand-muted mb-8 leading-relaxed max-w-lg mx-auto md:mx-0">
+                    Share sensitive data securely in seconds. No accounts. No tracking. 
+                    Just a secure link that vanishes when you say so.
+                </p>
+                
+                <!-- Actions -->
+                <div class="flex flex-col sm:flex-row items-center gap-4 justify-center md:justify-start">
+                    <a href="share.html?mode=text" class="btn-primary px-8 py-4 rounded-xl font-semibold text-lg shadow-lg shadow-orange-500/20 flex items-center gap-2 transition-transform hover:scale-105 group w-full sm:w-auto justify-center">
+                        <i class="fa-solid fa-bolt"></i> Start Sharing
+                    </a>
+                    
+                    <div class="relative w-full sm:w-64">
+                        <input type="text" id="hero-code-input" class="w-full bg-white/5 border border-white/10 rounded-xl py-4 pl-4 pr-12 text-white placeholder-gray-500 focus:outline-none focus:border-brand-primary/50 focus:ring-1 focus:ring-brand-primary/50 transition-all font-mono uppercase tracking-widest text-center" placeholder="ENTER CODE" maxlength="6">
+                        <button id="hero-code-submit" class="absolute right-2 top-2 bottom-2 px-3 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors">
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-center md:justify-start gap-6 mt-8 text-xs text-brand-muted opacity-60 uppercase tracking-widest font-medium">
+                    <span><i class="fa-solid fa-shield-halved mr-2 text-brand-primary"></i>AES-256 Encrypted</span>
+                    <span><i class="fa-solid fa-ghost mr-2 text-brand-secondary"></i>100% Anonymous</span>
+                </div>
             </div>
         </div>
     </section>
