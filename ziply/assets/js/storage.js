@@ -3,7 +3,7 @@
  * Stores share history in localStorage
  */
 
-const ZiplyStorage = {
+window.ZiplyStorage = {
     KEY: 'ziply_history_v1',
 
     getHistory() {
