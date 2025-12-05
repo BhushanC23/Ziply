@@ -74,30 +74,6 @@ const ZiplyStorage = {
         }
     }
 };
-        if (index !== -1) {
-            shares[index] = { ...shares[index], ...updates };
-            localStorage.setItem(ZiplyStorage.key, JSON.stringify(shares));
-            return shares[index];
-        }
-        return null;
-    },
-
-    // Check status of a share
-    getStatus: (share) => {
-        if (!share) return 'not_found';
-        if (share.isBurned) return 'burned';
-        if (Date.now() > share.expiresAt) return 'expired';
-        return 'active';
-    },
-
-    // Format relative time (e.g., "2 hours ago")
-    timeAgo: (timestamp) => {
-        const seconds = Math.floor((Date.now() - timestamp) / 1000);
-        let interval = seconds / 31536000;
-        if (interval > 1) return Math.floor(interval) + " years ago";
-        interval = seconds / 2592000;
-        if (interval > 1) return Math.floor(interval) + " months ago";
-        interval = seconds / 86400;
         if (interval > 1) return Math.floor(interval) + " days ago";
         interval = seconds / 3600;
         if (interval > 1) return Math.floor(interval) + " hours ago";
@@ -121,15 +97,4 @@ const ZiplyStorage = {
         return minutes + " mins left";
     },
 
-    // Delete a share
-    deleteShare: (id) => {
-        let shares = ZiplyStorage.getAll();
-        shares = shares.filter(s => s.id !== id);
-        localStorage.setItem(ZiplyStorage.key, JSON.stringify(shares));
-    },
 
-    // Clear all history
-    clearAll: () => {
-        localStorage.removeItem(ZiplyStorage.key);
-    }
-};
