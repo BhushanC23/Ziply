@@ -93,13 +93,14 @@
     <!-- Hero Section -->
     <section class="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden">
         <!-- Background Glow Effects -->
-        <div class="hero-bg">
-            <i class="fa-solid fa-bolt floating-icon icon-1" style="--r: -15deg;"></i>
-            <i class="fa-solid fa-shield-halved floating-icon icon-2" style="--r: 10deg;"></i>
-            <i class="fa-solid fa-paper-plane floating-icon icon-3" style="--r: -5deg;"></i>
+        <div class="hero-bg absolute inset-0 pointer-events-none">
+            <!-- 3D Floating Bolts -->
+            <img src="assets/img/bolt-3d.png" class="bolt-3d bolt-1" alt="">
+            <img src="assets/img/bolt-3d.png" class="bolt-3d bolt-2" alt="">
+            <img src="assets/img/bolt-3d.png" class="bolt-3d bolt-3" alt="">
         </div>
 
-        <div class="max-w-6xl mx-auto px-6 text-center">
+        <div class="max-w-6xl mx-auto px-6 text-center relative z-10">
             <div class="inline-block mb-8 px-4 py-1.5 rounded-full glass-panel text-xs font-medium text-brand-secondary tracking-wide uppercase animate-pulse">
                 <span class="w-2 h-2 rounded-full bg-brand-secondary inline-block mr-2"></span> v1.0 Public Beta is Live
             </div>
