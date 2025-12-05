@@ -136,11 +136,24 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (fileName) fileName.textContent = share.file.name;
                 if (fileSize) fileSize.textContent = ZiplyAPI.formatBytes(share.file.size) + ' • Uploaded ' + ZiplyAPI.timeAgo(share.createdAt);
 
+                // Image Preview Logic
+                const previewContainer = document.getElementById('image-preview-container');
+                const previewImg = document.getElementById('image-preview');
+                
+                if (share.file.previewUrl && previewContainer && previewImg) {
+                    previewImg.src = share.file.previewUrl;
+                    previewContainer.classList.remove('hidden');
+                }
+
                 if (downloadBtn) {
-                    downloadBtn.addEventListener('click', async () => {
+                    // Remove old listeners to prevent duplicates if re-run
+                    const newBtn = downloadBtn.cloneNode(true);
+                    downloadBtn.parentNode.replaceChild(newBtn, downloadBtn);
+                    
+                    newBtn.addEventListener('click', async () => {
                         // Fetch Download URL
                         try {
-                            downloadBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Preparing...';
+                            newBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Preparing...';
                             const data = await ZiplyAPI.getDownloadUrl(shareId);
                             
                             if (data.downloadUrl) {
@@ -153,15 +166,20 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 link.click();
                                 document.body.removeChild(link);
 
-                                downloadBtn.innerHTML = '<i class="fa-solid fa-check mr-2"></i> Download Started';
+                                newBtn.innerHTML = '<i class="fa-solid fa-check mr-2"></i> Download Started';
+                                setTimeout(() => {
+                                     newBtn.innerHTML = '<i class="fa-solid fa-download mr-2"></i> Download';
+                                }, 3000);
                             } else {
-                                showNotification('Download failed', 'error');
-                                downloadBtn.innerHTML = '<i class="fa-solid fa-download mr-2"></i> Download File';
+                                // showNotification('Download failed', 'error');
+                                alert('Download failed');
+                                newBtn.innerHTML = '<i class="fa-solid fa-download mr-2"></i> Download File';
                             }
                         } catch (e) {
                             console.error(e);
-                            showNotification('Download error', 'error');
-                            downloadBtn.innerHTML = '<i class="fa-solid fa-download mr-2"></i> Download File';
+                            // showNotification('Download error', 'error');
+                            alert('Download error: ' + e.message);
+                            newBtn.innerHTML = '<i class="fa-solid fa-download mr-2"></i> Download File';
                         }
                     });
                 }

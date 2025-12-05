@@ -113,6 +113,14 @@ export const getShare = async (req, res) => {
     share.views += 1;
     await share.save();
 
+    let previewUrl = null;
+    if (share.file && share.file.mimeType && share.file.mimeType.startsWith('image/')) {
+        const { data } = await supabase.storage
+            .from('ziply-files')
+            .createSignedUrl(share.file.storageKey, 60 * 60); // 1 hour expiry for preview
+        if (data) previewUrl = data.signedUrl;
+    }
+
     const response = {
       type: share.type,
       content: share.content,
@@ -120,6 +128,7 @@ export const getShare = async (req, res) => {
         name: share.file.originalName,
         size: share.file.size,
         mimeType: share.file.mimeType,
+        previewUrl: previewUrl
       } : null,
       createdAt: share.createdAt,
       expiresAt: share.expiresAt,
