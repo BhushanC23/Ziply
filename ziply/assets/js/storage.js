@@ -74,30 +74,6 @@ const ZiplyStorage = {
         }
     }
 };
-        localStorage.setItem(ZiplyStorage.key, JSON.stringify(shares));
-        return newShare;
-    },
-
-    // Get a share by ID
-    getShare: async (id) => {
-        // Instant retrieval
-        
-        const shares = ZiplyStorage.getAll();
-        return shares.find(s => s.id === id) || null;
-    },
-
-    // Get all shares (for history)
-    getAll: () => {
-        const data = localStorage.getItem(ZiplyStorage.key);
-        return data ? JSON.parse(data) : [];
-    },
-
-    // Update a share (e.g., increment views, mark burned)
-    updateShare: async (id, updates) => {
-        // Instant update
-
-        const shares = ZiplyStorage.getAll();
-        const index = shares.findIndex(s => s.id === id);
         if (index !== -1) {
             shares[index] = { ...shares[index], ...updates };
             localStorage.setItem(ZiplyStorage.key, JSON.stringify(shares));
