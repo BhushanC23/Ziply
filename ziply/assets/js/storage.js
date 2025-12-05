@@ -74,27 +74,5 @@ const ZiplyStorage = {
         }
     }
 };
-        if (interval > 1) return Math.floor(interval) + " days ago";
-        interval = seconds / 3600;
-        if (interval > 1) return Math.floor(interval) + " hours ago";
-        interval = seconds / 60;
-        if (interval > 1) return Math.floor(interval) + " minutes ago";
-        return "Just now";
-    },
-    
-    // Format time remaining
-    timeRemaining: (timestamp) => {
-        const seconds = Math.floor((timestamp - Date.now()) / 1000);
-        if (seconds <= 0) return "Expired";
-        
-        const days = Math.floor(seconds / 86400);
-        if (days > 0) return days + " days left";
-        
-        const hours = Math.floor(seconds / 3600);
-        if (hours > 0) return hours + " hours left";
-        
-        const minutes = Math.floor(seconds / 60);
-        return minutes + " mins left";
-    },
 
 
