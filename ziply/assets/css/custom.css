@@ -258,8 +258,12 @@ html {
 }
 
 @keyframes float {
-    0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)) scale(1); }
-    50% { transform: translateY(-30px) rotate(calc(var(--r, 0deg) + 5deg)) scale(1.1); }
+    0%, 100% { 
+        transform: translateY(0) translateX(0) rotate(var(--r, 0deg)) scale(1); 
+    }
+    50% { 
+        transform: translateY(-40px) translateX(15px) rotate(calc(var(--r, 0deg) + 8deg)) scale(1.1); 
+    }
 }
 
 @keyframes pulseGlow {
@@ -333,38 +337,81 @@ html {
     z-index: 0; /* Behind text but visible */
     opacity: 0.9;
     filter: drop-shadow(0 0 30px rgba(46, 196, 243, 0.5)) drop-shadow(0 0 15px rgba(255, 123, 84, 0.4));
-    animation: float 8s ease-in-out infinite;
+    animation: float 10s ease-in-out infinite;
     pointer-events: none;
+    will-change: transform;
 }
 
 .bolt-1 {
-    top: 10%;
-    right: 5%;
-    width: 350px;
+    top: 8%;
+    right: 2%;
+    width: 400px;
+    animation-duration: 12s;
     animation-delay: 0s;
     --r: 15deg;
     z-index: -1;
-    filter: drop-shadow(0 0 40px rgba(46, 196, 243, 0.4));
+    filter: drop-shadow(0 0 50px rgba(46, 196, 243, 0.5));
 }
 
 .bolt-2 {
-    bottom: 5%;
-    left: -5%;
-    width: 280px;
-    animation-delay: -3s;
+    bottom: -5%;
+    left: -8%;
+    width: 320px;
+    animation-duration: 15s;
+    animation-delay: -5s;
     --r: -10deg;
-    filter: blur(4px) drop-shadow(0 0 30px rgba(255, 123, 84, 0.3));
-    opacity: 0.6;
+    filter: blur(6px) drop-shadow(0 0 40px rgba(255, 123, 84, 0.3));
+    opacity: 0.5;
     z-index: -1;
 }
 
 .bolt-3 {
-    top: 20%;
-    left: 15%;
-    width: 120px;
-    animation-delay: -5s;
+    top: 15%;
+    left: 10%;
+    width: 150px;
+    animation-duration: 18s;
+    animation-delay: -8s;
     --r: -25deg;
-    filter: blur(2px) drop-shadow(0 0 20px rgba(46, 196, 243, 0.3));
-    opacity: 0.5;
+    filter: blur(3px) drop-shadow(0 0 25px rgba(46, 196, 243, 0.3));
+    opacity: 0.4;
     z-index: -1;
+}
+/* Mobile Responsiveness for 3D Bolts */
+@media (max-width: 768px) {
+    .bolt-3d {
+        animation-name: floatMobile; /* Use gentler animation on mobile */
+    }
+    .bolt-1 {
+        width: 180px;
+        top: 5%;
+        right: -15%; /* Push slightly off-screen to avoid text overlap */
+        opacity: 0.5;
+        filter: drop-shadow(0 0 20px rgba(46, 196, 243, 0.4));
+    }
+    .bolt-2 {
+        width: 140px;
+        bottom: 5%;
+        left: -10%;
+        opacity: 0.3;
+        filter: blur(4px) drop-shadow(0 0 15px rgba(255, 123, 84, 0.2));
+    }
+    .bolt-3 {
+        width: 80px;
+        top: 15%;
+        left: 5%;
+        opacity: 0.2;
+        filter: blur(2px);
+    }
+    /* Adjust Hero Text for Mobile */
+    .hero-slogan {
+        font-size: 2.5rem; /* Smaller text on mobile */
+    }
+}
+@keyframes floatMobile {
+    0%, 100% { 
+        transform: translateY(0) translateX(0) rotate(var(--r, 0deg)) scale(1); 
+    }
+    50% { 
+        transform: translateY(-15px) translateX(5px) rotate(calc(var(--r, 0deg) + 3deg)) scale(1.05); 
+    }
 }
