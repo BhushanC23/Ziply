@@ -165,6 +165,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // generateBtn is already defined at the top
     const inputSection = document.getElementById('input-section');
     const loadingSection = document.getElementById('loading-section');
+    const loadingText = document.getElementById('loading-text');
+    const progressBarContainer = document.getElementById('upload-progress-container');
+    const progressBar = document.getElementById('upload-progress-bar');
+    const progressPercentage = document.getElementById('upload-percentage');
+
     const outputSection = document.getElementById('output-section');
     const createNewBtn = document.getElementById('createNewBtn');
     const burnBadge = document.getElementById('burn-badge');
@@ -198,6 +203,20 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // 2. Show Loading
             loadingSection.classList.remove('hidden');
+            
+            // Reset Progress UI
+            if (currentMode === 'file') {
+                if (loadingText) loadingText.textContent = 'Uploading your file...';
+                if (progressBarContainer) progressBarContainer.classList.remove('hidden');
+                if (progressPercentage) progressPercentage.classList.remove('hidden');
+                if (progressBar) progressBar.style.width = '0%';
+                if (progressPercentage) progressPercentage.textContent = '0%';
+            } else {
+                if (loadingText) loadingText.textContent = 'Creating your secure Ziply link';
+                if (progressBarContainer) progressBarContainer.classList.add('hidden');
+                if (progressPercentage) progressPercentage.classList.add('hidden');
+            }
+
             // Small delay to allow display:block to apply before opacity transition
             setTimeout(() => {
                 loadingSection.classList.remove('opacity-0');
@@ -234,7 +253,17 @@ document.addEventListener('DOMContentLoaded', () => {
                         type: currentMode,
                         content: content,
                         duration: duration,
-                        burnOnRead: isBurnActive
+                        burnOnRead: isBurnActive,
+                        onProgress: (percent) => {
+                            if (currentMode === 'file' && progressBar && progressPercentage) {
+                                const p = Math.round(percent);
+                                progressBar.style.width = `${p}%`;
+                                progressPercentage.textContent = `${p}%`;
+                                if (p === 100 && loadingText) {
+                                    loadingText.textContent = 'Finalizing...';
+                                }
+                            }
+                        }
                     });
 
                     // 4. Update UI with Real ID

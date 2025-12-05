@@ -23,17 +23,31 @@ const ZiplyAPI = {
             if (!urlRes.ok) throw new Error('Failed to get upload URL');
             const { uploadUrl, storageKey, shortId, path, token } = await urlRes.json();
 
-            // Step 2: Upload directly to Supabase
-            const uploadRes = await fetch(uploadUrl, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': file.type,
-                    'Authorization': `Bearer ${token}` // Supabase requires this for signed URLs
-                },
-                body: file
-            });
+            // Step 2: Upload directly to Supabase with Progress
+            await new Promise((resolve, reject) => {
+                const xhr = new XMLHttpRequest();
+                xhr.open('PUT', uploadUrl);
+                xhr.setRequestHeader('Content-Type', file.type);
+                xhr.setRequestHeader('Authorization', `Bearer ${token}`);
 
-            if (!uploadRes.ok) throw new Error('File upload failed');
+                xhr.upload.onprogress = (e) => {
+                    if (e.lengthComputable && data.onProgress) {
+                        const percentComplete = (e.loaded / e.total) * 100;
+                        data.onProgress(percentComplete);
+                    }
+                };
+
+                xhr.onload = () => {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        resolve();
+                    } else {
+                        reject(new Error('File upload failed'));
+                    }
+                };
+
+                xhr.onerror = () => reject(new Error('Network error during upload'));
+                xhr.send(file);
+            });
 
             // Step 3: Create Share Metadata
             body = JSON.stringify({
