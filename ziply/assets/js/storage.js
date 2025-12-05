@@ -1,53 +1,79 @@
 /**
- * Ziply Storage Manager
- * Simulates a backend database using localStorage
+ * Ziply Client-Side History Manager
+ * Stores share history in localStorage
  */
 
 const ZiplyStorage = {
-    key: 'ziply_shares',
+    KEY: 'ziply_history_v1',
 
-    // Generate a random 6-character ID
-    generateId: () => {
-        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-        let result = '';
-        for (let i = 0; i < 6; i++) {
-            result += chars.charAt(Math.floor(Math.random() * chars.length));
+    getHistory() {
+        try {
+            const data = localStorage.getItem(this.KEY);
+            return data ? JSON.parse(data) : [];
+        } catch (e) {
+            console.error('Error reading history:', e);
+            return [];
         }
-        return result;
     },
 
-    // Save a new share
-    createShare: async (data) => {
-        // Instant storage
-        
-        // --- BACKEND HOOK: Encryption ---
-        // TODO: Implement real encryption here before sending to backend.
-        // const encryptedContent = await ZiplyCrypto.encrypt(data.content);
-        
-        // --- BACKEND HOOK: File Upload ---
-        let storedContent = data.content;
-        if (data.type === 'file' && typeof data.content === 'object') {
-            // In a real backend, 'data.content' would be a File object.
-            // We would upload it to S3/Cloudinary here and get a URL back.
-            // For now (LocalStorage), we just store the filename.
-            console.log('Simulating File Upload:', data.content.name);
-            storedContent = data.content.name; 
-        }
+    addToHistory(share) {
+        try {
+            const history = this.getHistory();
+            
+            // Create a history item
+            const item = {
+                id: share.shortId,
+                type: share.type,
+                content: share.type === 'text' ? share.content.substring(0, 50) + (share.content.length > 50 ? '...' : '') : share.content, // Truncate text
+                fileName: share.fileData ? share.fileData.originalName : null,
+                fileSize: share.fileData ? share.fileData.size : null,
+                createdAt: Date.now(),
+                expiresAt: new Date(Date.now() + this.parseDuration(share.duration)).getTime(),
+                burnOnRead: share.burnOnRead,
+                ownerKey: share.ownerKey
+            };
 
-        const shares = ZiplyStorage.getAll();
-        const newShare = {
-            id: data.id || ZiplyStorage.generateId(),
-            ownerKey: Math.random().toString(36).substring(2, 15), // Simple random key for ownership
-            type: data.type || 'text',
-            content: storedContent || '', // Text content, filename, or URL
-            meta: data.meta || {}, // File size, etc.
-            createdAt: Date.now(),
-            expiresAt: data.expiresAt || (Date.now() + 24 * 60 * 60 * 1000), // Default 24h
-            views: 0,
-            burnOnRead: data.burnOnRead || false,
-            isBurned: false
-        };
-        shares.push(newShare);
+            // Add to beginning, limit to 50 items
+            history.unshift(item);
+            if (history.length > 50) history.pop();
+
+            localStorage.setItem(this.KEY, JSON.stringify(history));
+            return true;
+        } catch (e) {
+            console.error('Error saving history:', e);
+            return false;
+        }
+    },
+
+    removeFromHistory(id) {
+        try {
+            let history = this.getHistory();
+            history = history.filter(item => item.id !== id);
+            localStorage.setItem(this.KEY, JSON.stringify(history));
+            return true;
+        } catch (e) {
+            return false;
+        }
+    },
+
+    clearHistory() {
+        localStorage.removeItem(this.KEY);
+    },
+
+    // Helper to parse duration string to ms
+    parseDuration(durationStr) {
+        if (!durationStr) return 24 * 60 * 60 * 1000; // Default 1d
+        const unit = durationStr.slice(-1);
+        const val = parseInt(durationStr.slice(0, -1));
+        
+        switch(unit) {
+            case 'm': return val * 60 * 1000;
+            case 'h': return val * 60 * 60 * 1000;
+            case 'd': return val * 24 * 60 * 60 * 1000;
+            default: return 24 * 60 * 60 * 1000;
+        }
+    }
+};
         localStorage.setItem(ZiplyStorage.key, JSON.stringify(shares));
         return newShare;
     },

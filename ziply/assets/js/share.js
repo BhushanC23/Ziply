@@ -266,6 +266,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     });
 
+                    // Save to Local History
+                    if (window.ZiplyStorage) {
+                        ZiplyStorage.addToHistory({
+                            ...newShare,
+                            duration: duration // Pass duration to calculate expiry locally
+                        });
+                    }
+
                     // 4. Update UI with Real ID
                     const shareId = newShare.shortId;
                     
