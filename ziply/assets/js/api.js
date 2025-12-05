@@ -107,6 +107,20 @@ const ZiplyAPI = {
         return await response.json();
     },
 
+    async deleteShare(id, ownerKey) {
+        const response = await fetch(`${this.BASE_URL}/share/${id}`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ownerKey })
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message || 'Delete failed');
+        }
+        return await response.json();
+    },
+
     // Utils
     formatBytes(bytes) {
         if (bytes === 0) return '0 Bytes';

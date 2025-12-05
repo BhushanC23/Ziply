@@ -1,5 +1,5 @@
 import express from 'express';
-import { createShare, getShare, downloadFile, getUploadUrl } from '../controllers/shareController.js';
+import { createShare, getShare, downloadFile, getUploadUrl, deleteShare } from '../controllers/shareController.js';
 
 const router = express.Router();
 
@@ -8,5 +8,6 @@ router.post('/upload-url', getUploadUrl);
 router.post('/', createShare);
 router.get('/:id', getShare);
 router.get('/download/:id', downloadFile);
+router.delete('/:id', deleteShare);
 
 export default router;

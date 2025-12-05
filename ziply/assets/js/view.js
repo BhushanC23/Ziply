@@ -296,4 +296,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (e.key === 'Enter') handleSearch();
         });
     }
+
+    // Report Button Logic
+    const reportBtn = document.getElementById('report-btn');
+    if (reportBtn) {
+        reportBtn.addEventListener('click', () => {
+            if (confirm('Do you want to report this content as inappropriate or illegal?')) {
+                // In a real app, this would call an API
+                alert('Thank you. This content has been flagged for review by our moderation team.');
+            }
+        });
+    }
 });

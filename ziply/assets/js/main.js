@@ -35,18 +35,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // CTA Button Interaction Stub
+    // CTA Button Interaction
     const startSharingBtns = document.querySelectorAll('.btn-start-sharing');
     startSharingBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            // Future: Redirect to /share or open modal
-            console.log('Action: Start Sharing initiated');
-            // For demo purposes
-            btn.innerHTML = 'Loading...';
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Add simple click effect
+            btn.style.transform = 'scale(0.95)';
             setTimeout(() => {
-                btn.innerHTML = 'Start Sharing';
-                alert('Sharing workspace coming soon!');
-            }, 800);
+                btn.style.transform = 'scale(1)';
+                window.location.href = 'share.html';
+            }, 150);
         });
     });
 });

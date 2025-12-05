@@ -189,3 +189,39 @@ export const downloadFile = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// @desc    Delete share
+// @route   DELETE /api/share/:id
+// @access  Public (Protected by Owner Key)
+export const deleteShare = async (req, res) => {
+  try {
+    const { ownerKey } = req.body;
+    const share = await Share.findOne({ shortId: req.params.id });
+
+    if (!share) {
+      res.status(404);
+      throw new Error('Share not found');
+    }
+
+    if (share.ownerKey !== ownerKey) {
+      res.status(401);
+      throw new Error('Invalid owner key');
+    }
+
+    // If file, delete from Supabase
+    if (share.type === 'file' && share.file && share.file.storageKey) {
+      const { error } = await supabase.storage
+        .from('ziply-files')
+        .remove([share.file.storageKey]);
+      
+      if (error) console.error('Supabase delete error:', error);
+    }
+
+    await Share.deleteOne({ _id: share._id });
+
+    res.json({ message: 'Share deleted successfully' });
+
+  } catch (error) {
+    res.status(res.statusCode || 500).json({ message: error.message });
+  }
+};
