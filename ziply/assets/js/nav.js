@@ -94,6 +94,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Toggle Tray
     if (themeBtn && themeTray) {
+        // Force hide on load to prevent glitches
+        themeTray.classList.add('hidden');
+        
         themeBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             themeTray.classList.toggle('hidden');
