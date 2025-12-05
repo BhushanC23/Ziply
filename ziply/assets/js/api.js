@@ -6,15 +6,49 @@ const ZiplyAPI = {
 
     async createShare(data) {
         let body;
-        let headers = {};
+        let headers = { 'Content-Type': 'application/json' };
 
         if (data.type === 'file') {
-            const formData = new FormData();
-            formData.append('type', 'file');
-            formData.append('duration', data.duration);
-            formData.append('burnOnRead', data.burnOnRead);
-            formData.append('file', data.content); // Expecting File object
-            body = formData;
+            // Step 1: Get Upload URL
+            const file = data.content;
+            const urlRes = await fetch(`${this.BASE_URL}/share/upload-url`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    fileName: file.name,
+                    fileType: file.type 
+                })
+            });
+
+            if (!urlRes.ok) throw new Error('Failed to get upload URL');
+            const { uploadUrl, storageKey, shortId, path, token } = await urlRes.json();
+
+            // Step 2: Upload directly to Supabase
+            const uploadRes = await fetch(uploadUrl, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': file.type,
+                    'Authorization': `Bearer ${token}` // Supabase requires this for signed URLs
+                },
+                body: file
+            });
+
+            if (!uploadRes.ok) throw new Error('File upload failed');
+
+            // Step 3: Create Share Metadata
+            body = JSON.stringify({
+                type: 'file',
+                shortId: shortId, // Use the ID generated during upload
+                duration: data.duration,
+                burnOnRead: data.burnOnRead,
+                fileData: {
+                    originalName: file.name,
+                    mimeType: file.type,
+                    size: file.size,
+                    storageKey: path // Use the path returned by Supabase
+                }
+            });
+
         } else {
             body = JSON.stringify({
                 type: data.type,
@@ -22,7 +56,6 @@ const ZiplyAPI = {
                 duration: data.duration,
                 burnOnRead: data.burnOnRead
             });
-            headers['Content-Type'] = 'application/json';
         }
 
         const response = await fetch(`${this.BASE_URL}/share`, {

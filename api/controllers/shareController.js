@@ -7,20 +7,47 @@ dotenv.config();
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
+// @desc    Get Upload URL (for Direct Upload)
+// @route   POST /api/share/upload-url
+export const getUploadUrl = async (req, res) => {
+  try {
+    const { fileName, fileType } = req.body;
+    const shortId = generateShortId();
+    const storageKey = `${Date.now()}-${shortId}-${fileName}`;
+
+    // Create Signed Upload URL (valid for 60s)
+    const { data, error } = await supabase.storage
+      .from('ziply-files')
+      .createSignedUploadUrl(storageKey);
+
+    if (error) throw error;
+
+    res.json({ 
+      uploadUrl: data.signedUrl, 
+      storageKey: storageKey,
+      token: data.token,
+      path: data.path,
+      shortId: shortId
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // @desc    Create a new share
 // @route   POST /api/share
 // @access  Public
 export const createShare = async (req, res) => {
   try {
-    const { type, content, duration, burnOnRead } = req.body;
-    const file = req.file;
+    const { type, content, duration, burnOnRead, fileData } = req.body;
+    // const file = req.file; // No longer used for direct upload
 
     if (!type) {
       res.status(400);
       throw new Error('Type is required');
     }
 
-    const shortId = generateShortId();
+    const shortId = req.body.shortId || generateShortId(); // Use provided ID or generate new
     const ownerKey = generateOwnerKey();
     const expiresAt = calculateExpiry(duration);
 
@@ -35,26 +62,17 @@ export const createShare = async (req, res) => {
     if (type === 'text' || type === 'link') {
       shareData.content = content;
     } else if (type === 'file') {
-      if (!file) {
+      if (!fileData) {
         res.status(400);
-        throw new Error('No file uploaded');
+        throw new Error('File metadata is required');
       }
 
-      const storageKey = `${Date.now()}-${shortId}-${file.originalname}`;
-      
-      const { data, error } = await supabase.storage
-        .from('ziply-files')
-        .upload(storageKey, file.buffer, {
-          contentType: file.mimetype,
-        });
-
-      if (error) throw error;
-
+      // File is already uploaded to Supabase by Frontend
       shareData.file = {
-        originalName: file.originalname,
-        mimeType: file.mimetype,
-        size: file.size,
-        storageKey: storageKey,
+        originalName: fileData.originalName,
+        mimeType: fileData.mimeType,
+        size: fileData.size,
+        storageKey: fileData.storageKey,
       };
     }
 
